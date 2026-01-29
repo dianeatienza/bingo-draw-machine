@@ -8,8 +8,11 @@ type BingoNumber = {
 
 type BingoColumnKey = "B" | "I" | "N" | "G" | "O";
 
+type PatternGrid = boolean[][];
+
 const MIN_NUMBER = 1;
 const MAX_NUMBER = 75;
+const PATTERN_SIZE = 5;
 
 function createInitialNumbers(): BingoNumber[] {
   return Array.from({ length: MAX_NUMBER - MIN_NUMBER + 1 }, (_, i) => ({
@@ -18,11 +21,21 @@ function createInitialNumbers(): BingoNumber[] {
   }));
 }
 
+function createEmptyPattern(): PatternGrid {
+  return Array.from({ length: PATTERN_SIZE }, () =>
+    Array.from({ length: PATTERN_SIZE }, () => false)
+  );
+}
+
 function App() {
   const [numbers, setNumbers] = useState<BingoNumber[]>(() =>
     createInitialNumbers()
   );
   const [callHistory, setCallHistory] = useState<number[]>([]);
+  const [pattern, setPattern] = useState<PatternGrid>(() =>
+    createEmptyPattern()
+  );
+  const [isPatternEnlarged, setIsPatternEnlarged] = useState(false);
 
   const remainingNumbers = useMemo(
     () => numbers.filter((n) => !n.called),
@@ -70,6 +83,7 @@ function App() {
   function handleStartNewGame() {
     setNumbers(createInitialNumbers());
     setCallHistory([]);
+    setPattern(createEmptyPattern());
   }
 
   function handleDrawNumber() {
@@ -112,6 +126,27 @@ function App() {
   function handleReset() {
     setNumbers(createInitialNumbers());
     setCallHistory([]);
+    setPattern(createEmptyPattern());
+  }
+
+  function handleTogglePatternCell(row: number, col: number) {
+    setPattern((prev) =>
+      prev.map((rowValues, rowIndex) =>
+        rowIndex === row
+          ? rowValues.map((cellValue, colIndex) =>
+              colIndex === col ? !cellValue : cellValue
+            )
+          : rowValues
+      )
+    );
+  }
+
+  function handleClearPattern() {
+    setPattern(createEmptyPattern());
+  }
+
+  function handleTogglePatternSize() {
+    setIsPatternEnlarged((prev) => !prev);
   }
 
   return (
@@ -233,16 +268,95 @@ function App() {
           </div>
 
           <div className="bingo-pattern-wrapper">
-            <h2 className="bingo-section-title">Pattern</h2>
+            <h2 className="bingo-section-title">Winning Pattern</h2>
             <div className="bingo-pattern">
-              <div className="bingo-pattern-name">Standard Line</div>
-              <div className="bingo-pattern-description">
-                Any full horizontal, vertical, or diagonal line.
+              <div className="bingo-pattern-header-row">
+                <div className="bingo-pattern-text">
+                  <div className="bingo-pattern-name">Winning Pattern</div>
+                  <div className="bingo-pattern-description">
+                    Click cells to toggle the active winning pattern. This does
+                    not affect called numbers.
+                  </div>
+                </div>
+                <div className="bingo-pattern-actions">
+                  <button
+                    type="button"
+                    className="bingo-pattern-action-button"
+                    onClick={handleClearPattern}
+                  >
+                    Clear Pattern
+                  </button>
+                  <button
+                    type="button"
+                    className="bingo-pattern-action-button"
+                    onClick={handleTogglePatternSize}
+                  >
+                    {isPatternEnlarged ? "Shrink Pattern" : "Enlarge Pattern"}
+                  </button>
+                </div>
+              </div>
+
+              <div className="bingo-pattern-grid">
+                {pattern.map((row, rowIndex) => (
+                  <div key={rowIndex} className="bingo-pattern-row">
+                    {row.map((isActive, colIndex) => (
+                      <button
+                        key={colIndex}
+                        type="button"
+                        className={`bingo-pattern-cell ${
+                          isActive ? "active" : ""
+                        }`}
+                        onClick={() =>
+                          handleTogglePatternCell(rowIndex, colIndex)
+                        }
+                      >
+                        &nbsp;
+                      </button>
+                    ))}
+                  </div>
+                ))}
               </div>
             </div>
           </div>
         </section>
       </main>
+
+      {isPatternEnlarged && (
+        <div
+          className="bingo-pattern-overlay"
+          onClick={handleTogglePatternSize}
+        >
+          <div
+            className="bingo-pattern-overlay-inner"
+            onClick={(event) => event.stopPropagation()}
+          >
+            <div className="bingo-pattern-overlay-title">Winning Pattern</div>
+            <div className="bingo-pattern-overlay-grid">
+              {pattern.map((row, rowIndex) => (
+                <div key={rowIndex} className="bingo-pattern-row">
+                  {row.map((isActive, colIndex) => (
+                    <button
+                      key={colIndex}
+                      type="button"
+                      className={`bingo-pattern-cell ${
+                        isActive ? "active" : ""
+                      }`}
+                      onClick={() =>
+                        handleTogglePatternCell(rowIndex, colIndex)
+                      }
+                    >
+                      &nbsp;
+                    </button>
+                  ))}
+                </div>
+              ))}
+            </div>
+            <p className="bingo-pattern-overlay-hint">
+              Click cells to edit the pattern. Click outside this box to close.
+            </p>
+          </div>
+        </div>
+      )}
     </div>
   );
 }

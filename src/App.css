@@ -184,11 +184,25 @@
 }
 
 .bingo-pattern {
-  padding: 1.2rem 1.4rem;
+  padding: 1.2rem 1.4rem 1.4rem;
   border-radius: 1rem;
   background: rgba(15, 23, 42, 0.9);
   border: 1px solid rgba(148, 163, 184, 0.45);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
+}
+
+.bingo-pattern-header-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 0.75rem 1.25rem;
+  margin-bottom: 1rem;
+}
+
+.bingo-pattern-text {
+  max-width: 60%;
+  min-width: 220px;
 }
 
 .bingo-pattern-name {
@@ -200,6 +214,127 @@
 .bingo-pattern-description {
   font-size: 1rem;
   color: #e5e7eb;
+}
+
+.bingo-pattern-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+  justify-content: flex-end;
+}
+
+.bingo-pattern-action-button {
+  padding: 0.45rem 0.9rem;
+  font-size: 0.85rem;
+  font-weight: 500;
+  border-radius: 999px;
+  border: 1px solid #4b5563;
+  background: #020617;
+  color: #e5e7eb;
+  cursor: pointer;
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    transform 120ms ease;
+}
+
+.bingo-pattern-action-button:hover {
+  background: #0b1120;
+  border-color: #9ca3af;
+  transform: translateY(-0.5px);
+}
+
+.bingo-pattern-action-button:active {
+  transform: translateY(0);
+}
+
+.bingo-pattern-grid {
+  display: grid;
+  gap: 0.3rem;
+}
+
+.bingo-pattern-row {
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 0.3rem;
+}
+
+.bingo-pattern-cell {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  border-radius: 0.45rem;
+  border: 2px solid #4b5563;
+  background: #020617;
+  cursor: pointer;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
+  transition:
+    background-color 120ms ease,
+    border-color 120ms ease,
+    transform 80ms ease,
+    box-shadow 120ms ease;
+}
+
+.bingo-pattern-cell:hover {
+  border-color: #e5e7eb;
+}
+
+.bingo-pattern-cell.active {
+  background: radial-gradient(circle at top, #f97316, #b91c1c);
+  border-color: #fed7aa;
+  box-shadow:
+    0 0 0 1px rgba(254, 215, 170, 0.9),
+    0 10px 26px rgba(0, 0, 0, 0.9);
+}
+
+.bingo-pattern-overlay {
+  position: fixed;
+  inset: 0;
+  background: radial-gradient(circle at top, rgba(17, 24, 39, 0.97), #020617);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  z-index: 40;
+  padding: 1.5rem;
+}
+
+.bingo-pattern-overlay-inner {
+  background: rgba(15, 23, 42, 0.98);
+  border-radius: 1.5rem;
+  padding: 1.75rem 2rem 1.9rem;
+  border: 1px solid rgba(148, 163, 184, 0.7);
+  box-shadow:
+    0 30px 80px rgba(0, 0, 0, 0.9),
+    0 0 0 1px rgba(15, 23, 42, 0.9);
+  width: min(90vw, 720px);
+}
+
+.bingo-pattern-overlay-title {
+  text-align: center;
+  font-size: clamp(2rem, 4vw, 2.6rem);
+  font-weight: 700;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  margin-bottom: 1.25rem;
+}
+
+.bingo-pattern-overlay-grid {
+  margin-top: 0.25rem;
+}
+
+.bingo-pattern-overlay-grid .bingo-pattern-row {
+  gap: 0.45rem;
+}
+
+.bingo-pattern-overlay-grid .bingo-pattern-cell {
+  border-width: 3px;
+}
+
+.bingo-pattern-overlay-hint {
+  margin-top: 1.25rem;
+  text-align: center;
+  font-size: 0.95rem;
+  color: #e5e7eb;
+  opacity: 0.8;
 }
 
 .bingo-section-title {

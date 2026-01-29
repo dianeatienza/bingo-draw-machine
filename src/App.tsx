@@ -181,9 +181,9 @@ function App() {
               {callHistoryNumbers.length === 0 ? (
                 <p className="bingo-history-empty">No numbers called yet.</p>
               ) : (
-                [...callHistoryNumbers]
+                callHistoryNumbers
+                  .slice(-50)
                   .reverse()
-                  .slice(0, 50)
                   .map((n) => (
                     <div key={n.value} className="bingo-history-item">
                       <span className="bingo-history-code">
@@ -197,7 +197,7 @@ function App() {
         </section>
 
         <section className="bingo-control-panel">
-          <div className="bingo-now-label">Current Call</div>
+          {/* <div className="bingo-section-title">Current Call</div> */}
           <div className="bingo-now-number">
             {lastCalled ? (
               <>
@@ -205,9 +205,9 @@ function App() {
                   {getBingoLetter(lastCalled.value)}
                 </span>
                 <span className="bingo-now-value">{lastCalled.value}</span>
-                <span className="bingo-now-code">
+                {/* <span className="bingo-now-code">
                   {getBingoLetter(lastCalled.value)}-{lastCalled.value}
-                </span>
+                </span> */}
               </>
             ) : (
               <span className="bingo-now-placeholder">
@@ -259,10 +259,9 @@ function App() {
             <div className="bingo-pattern">
               <div className="bingo-pattern-header-row">
                 <div className="bingo-pattern-text">
-                  <div className="bingo-pattern-name">Winning Pattern</div>
+                  {/* <div className="bingo-pattern-name">Winning Pattern</div> */}
                   <div className="bingo-pattern-description">
-                    Click cells to toggle the active winning pattern. This does
-                    not affect called numbers.
+                    Click cells to toggle the active winning pattern.
                   </div>
                 </div>
                 <div className="bingo-pattern-actions">

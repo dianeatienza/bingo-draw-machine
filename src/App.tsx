@@ -146,10 +146,8 @@ function App() {
   return (
     <div className="bingo-root">
       <header className="bingo-header">
-        <h1 className="bingo-title">AO Family Bingo</h1>
-        {/* <p className="bingo-subtitle">
-          Large-screen friendly control panel for live games
-        </p> */}
+        {/* <h1 className="bingo-title">AO Family Bingo</h1> */}
+        <p className="bingo-subtitle">ADventure Ocean Family Bingo</p>
       </header>
 
       <main className="bingo-layout">
@@ -205,14 +203,11 @@ function App() {
                   {getBingoLetter(lastCalled.value)}
                 </span>
                 <span className="bingo-now-value">{lastCalled.value}</span>
-                {/* <span className="bingo-now-code">
-                  {getBingoLetter(lastCalled.value)}-{lastCalled.value}
-                </span> */}
               </>
             ) : (
-              <span className="bingo-now-placeholder">
-                Press DRAW NUMBER to begin
-              </span>
+              <div className="bingo-now-placeholder">
+                Tap <strong>Draw Number</strong> to begin
+              </div>
             )}
           </div>
 

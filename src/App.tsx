@@ -80,12 +80,6 @@ function App() {
     [callHistory, numbers]
   );
 
-  function handleStartNewGame() {
-    setNumbers(createInitialNumbers());
-    setCallHistory([]);
-    setPattern(createEmptyPattern());
-  }
-
   function handleDrawNumber() {
     if (remainingNumbers.length === 0) return;
 
@@ -161,7 +155,7 @@ function App() {
       <main className="bingo-layout">
         <section className="bingo-board-panel">
           <div className="bingo-grid-wrapper">
-            <h2 className="bingo-section-title">Number Board</h2>
+            {/* <h2 className="bingo-section-title">Number Board</h2> */}
             <div className="bingo-grid">
               {(["B", "I", "N", "G", "O"] as BingoColumnKey[]).map(
                 (columnKey) => (
@@ -233,17 +227,10 @@ function App() {
             </button>
             <button
               type="button"
-              className="bingo-button secondary"
-              onClick={handleStartNewGame}
-            >
-              Start New Game
-            </button>
-            <button
-              type="button"
               className="bingo-button subtle"
               onClick={handleReset}
             >
-              Reset
+              New Game
             </button>
             <button
               type="button"

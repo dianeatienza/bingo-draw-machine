@@ -60,8 +60,8 @@
   gap: 1.5rem;
   padding: 2.5rem 1.5rem;
   border-radius: 1.5rem;
-  background: radial-gradient(circle at top left, #1a365d, #111827);
-  border: 1px solid rgba(255, 255, 255, 0.08);
+  background: radial-gradient(circle at top left, #1e1b4b, #020617);
+  border: 1px solid rgba(191, 219, 254, 0.5);
   box-shadow:
     0 24px 60px rgba(0, 0, 0, 0.55),
     0 0 0 1px rgba(148, 163, 184, 0.15);
@@ -71,7 +71,7 @@
 .bingo-now-letter {
   font-size: clamp(5rem, 8vw, 6rem);
   font-weight: 800;
-  color: #fbbf24;
+  color: #a855f7;
   text-shadow: 0 8px 25px rgba(0, 0, 0, 0.7);
 }
 
@@ -122,17 +122,17 @@
 }
 
 .bingo-button.primary {
-  background: linear-gradient(135deg, #f97316, #facc15);
-  color: #111827;
+  background: linear-gradient(135deg, #4f46e5, #a855f7);
+  color: #f9fafb;
   box-shadow:
-    0 14px 40px rgba(248, 165, 76, 0.65),
-    0 0 0 1px rgba(55, 65, 81, 0.3);
+    0 14px 40px rgba(79, 70, 229, 0.7),
+    0 0 0 1px rgba(30, 64, 175, 0.7);
 }
 
 .bingo-button.primary:hover:not(:disabled) {
   transform: translateY(-1px);
   box-shadow:
-    0 20px 55px rgba(248, 165, 76, 0.8),
+    0 20px 55px rgba(129, 140, 248, 0.8),
     0 0 0 1px rgba(55, 65, 81, 0.4);
 }
 
@@ -186,8 +186,8 @@
 .bingo-pattern {
   padding: 1.2rem 1.4rem 1.4rem;
   border-radius: 1rem;
-  background: rgba(15, 23, 42, 0.9);
-  border: 1px solid rgba(148, 163, 184, 0.45);
+  background: radial-gradient(circle at top, rgba(30, 64, 175, 0.3), #020617);
+  border: 1px solid rgba(191, 219, 254, 0.65);
   box-shadow: 0 12px 30px rgba(0, 0, 0, 0.4);
 }
 
@@ -228,7 +228,7 @@
   font-size: 0.85rem;
   font-weight: 500;
   border-radius: 999px;
-  border: 1px solid #4b5563;
+  border: 1px solid rgba(129, 140, 248, 0.8);
   background: #020617;
   color: #e5e7eb;
   cursor: pointer;
@@ -239,8 +239,8 @@
 }
 
 .bingo-pattern-action-button:hover {
-  background: #0b1120;
-  border-color: #9ca3af;
+  background: #020617;
+  border-color: #e0e7ff;
   transform: translateY(-0.5px);
 }
 
@@ -263,7 +263,7 @@
   width: 100%;
   aspect-ratio: 1 / 1;
   border-radius: 0.45rem;
-  border: 2px solid #4b5563;
+  border: 2px solid rgba(129, 140, 248, 0.9);
   background: #020617;
   cursor: pointer;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.6);
@@ -279,17 +279,17 @@
 }
 
 .bingo-pattern-cell.active {
-  background: radial-gradient(circle at top, #f97316, #b91c1c);
-  border-color: #fed7aa;
+  background: radial-gradient(circle at top, #4f46e5, #a855f7);
+  border-color: #e5e7eb;
   box-shadow:
-    0 0 0 1px rgba(254, 215, 170, 0.9),
+    0 0 0 1px rgba(191, 219, 254, 0.95),
     0 10px 26px rgba(0, 0, 0, 0.9);
 }
 
 .bingo-pattern-overlay {
   position: fixed;
   inset: 0;
-  background: radial-gradient(circle at top, rgba(17, 24, 39, 0.97), #020617);
+  background: radial-gradient(circle at top, rgba(88, 28, 135, 0.95), #020617);
   display: flex;
   align-items: center;
   justify-content: center;
@@ -301,7 +301,7 @@
   background: rgba(15, 23, 42, 0.98);
   border-radius: 1.5rem;
   padding: 1.75rem 2rem 1.9rem;
-  border: 1px solid rgba(148, 163, 184, 0.7);
+  border: 1px solid rgba(191, 219, 254, 0.9);
   box-shadow:
     0 30px 80px rgba(0, 0, 0, 0.9),
     0 0 0 1px rgba(15, 23, 42, 0.9);
@@ -349,8 +349,8 @@
 .bingo-history-wrapper {
   padding: 1.25rem 1.35rem;
   border-radius: 1.25rem;
-  background: rgba(15, 23, 42, 0.85);
-  border: 1px solid rgba(148, 163, 184, 0.28);
+  background: radial-gradient(circle at top, rgba(30, 64, 175, 0.35), #020617);
+  border: 1px solid rgba(129, 140, 248, 0.7);
   box-shadow: 0 18px 40px rgba(0, 0, 0, 0.4);
 }
 
@@ -374,7 +374,7 @@
   letter-spacing: 0.14em;
   text-transform: uppercase;
   padding-bottom: 0.3rem;
-  border-bottom: 1px solid rgba(148, 163, 184, 0.5);
+  border-bottom: 1px solid rgba(129, 140, 248, 0.8);
 }
 
 .bingo-cell {
@@ -391,9 +391,9 @@
 }
 
 .bingo-cell.called {
-  background: radial-gradient(circle at top, #16a34a, #14532d);
-  border-color: #86efac;
-  box-shadow: 0 0 0 1px rgba(187, 247, 208, 0.5);
+  background: radial-gradient(circle at top, #1d4ed8, #4f46e5);
+  border-color: #c7d2fe;
+  box-shadow: 0 0 0 1px rgba(191, 219, 254, 0.8);
 }
 
 .bingo-cell-letter {

@@ -152,10 +152,10 @@ function App() {
   return (
     <div className="bingo-root">
       <header className="bingo-header">
-        <h1 className="bingo-title">BINGO HOST</h1>
-        <p className="bingo-subtitle">
+        <h1 className="bingo-title">Family Bingo</h1>
+        {/* <p className="bingo-subtitle">
           Large-screen friendly control panel for live games
-        </p>
+        </p> */}
       </header>
 
       <main className="bingo-layout">

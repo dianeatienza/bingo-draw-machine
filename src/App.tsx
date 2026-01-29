@@ -147,7 +147,7 @@ function App() {
     <div className="bingo-root">
       <header className="bingo-header">
         {/* <h1 className="bingo-title">AO Family Bingo</h1> */}
-        <p className="bingo-subtitle">ADventure Ocean Family Bingo</p>
+        <p className="bingo-subtitle">Adventure Ocean Family Bingo</p>
       </header>
 
       <main className="bingo-layout">

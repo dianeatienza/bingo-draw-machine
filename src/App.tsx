@@ -6,6 +6,8 @@ type BingoNumber = {
   called: boolean;
 };
 
+type BingoColumnKey = "B" | "I" | "N" | "G" | "O";
+
 const MIN_NUMBER = 1;
 const MAX_NUMBER = 75;
 
@@ -20,8 +22,7 @@ function App() {
   const [numbers, setNumbers] = useState<BingoNumber[]>(() =>
     createInitialNumbers()
   );
-  const [lastCalled, setLastCalled] = useState<BingoNumber | null>(null);
-  const [isStarted, setIsStarted] = useState(false);
+  const [callHistory, setCallHistory] = useState<number[]>([]);
 
   const remainingNumbers = useMemo(
     () => numbers.filter((n) => !n.called),
@@ -33,14 +34,46 @@ function App() {
     [numbers]
   );
 
+  const lastCalledValue = callHistory[callHistory.length - 1];
+  const lastCalled =
+    lastCalledValue != null
+      ? numbers.find((n) => n.value === lastCalledValue) ?? null
+      : null;
+
+  const groupedNumbers = useMemo(() => {
+    const groups: Record<BingoColumnKey, BingoNumber[]> = {
+      B: [],
+      I: [],
+      N: [],
+      G: [],
+      O: [],
+    };
+
+    numbers.forEach((n) => {
+      const letter = getBingoLetter(n.value) as BingoColumnKey;
+      if (letter) {
+        groups[letter].push(n);
+      }
+    });
+
+    return groups;
+  }, [numbers]);
+
+  const callHistoryNumbers = useMemo(
+    () =>
+      callHistory
+        .map((value) => numbers.find((n) => n.value === value))
+        .filter((n): n is BingoNumber => Boolean(n)),
+    [callHistory, numbers]
+  );
+
   function handleStartNewGame() {
     setNumbers(createInitialNumbers());
-    setLastCalled(null);
-    setIsStarted(true);
+    setCallHistory([]);
   }
 
-  function handleCallNext() {
-    if (!isStarted || remainingNumbers.length === 0) return;
+  function handleDrawNumber() {
+    if (remainingNumbers.length === 0) return;
 
     const randomIndex = Math.floor(Math.random() * remainingNumbers.length);
     const next = remainingNumbers[randomIndex];
@@ -55,27 +88,87 @@ function App() {
           : n
       )
     );
-    setLastCalled(next);
+    setCallHistory((prev) => [...prev, next.value]);
+  }
+
+  function handleUndoLastCall() {
+    if (callHistory.length === 0) return;
+
+    const lastValue = callHistory[callHistory.length - 1];
+
+    setCallHistory((prev) => prev.slice(0, -1));
+    setNumbers((prev) =>
+      prev.map((n) =>
+        n.value === lastValue
+          ? {
+              ...n,
+              called: false,
+            }
+          : n
+      )
+    );
   }
 
   function handleReset() {
     setNumbers(createInitialNumbers());
-    setLastCalled(null);
-    setIsStarted(false);
+    setCallHistory([]);
   }
 
   return (
     <div className="bingo-root">
       <header className="bingo-header">
-        <h1 className="bingo-title">Bingo Host</h1>
+        <h1 className="bingo-title">BINGO HOST</h1>
         <p className="bingo-subtitle">
           Large-screen friendly control panel for live games
         </p>
       </header>
 
       <main className="bingo-layout">
-        <section className="bingo-main-panel">
-          <div className="bingo-now-label">Now calling</div>
+        <section className="bingo-board-panel">
+          <div className="bingo-grid-wrapper">
+            <h2 className="bingo-section-title">Number Board</h2>
+            <div className="bingo-grid">
+              {(["B", "I", "N", "G", "O"] as BingoColumnKey[]).map(
+                (columnKey) => (
+                  <div key={columnKey} className="bingo-column">
+                    <div className="bingo-column-header">{columnKey}</div>
+                    {groupedNumbers[columnKey].map((n) => (
+                      <div
+                        key={n.value}
+                        className={`bingo-cell ${n.called ? "called" : ""}`}
+                      >
+                        <span className="bingo-cell-value">{n.value}</span>
+                      </div>
+                    ))}
+                  </div>
+                )
+              )}
+            </div>
+          </div>
+
+          <div className="bingo-history-wrapper">
+            <h2 className="bingo-section-title">Call History</h2>
+            <div className="bingo-history">
+              {callHistoryNumbers.length === 0 ? (
+                <p className="bingo-history-empty">No numbers called yet.</p>
+              ) : (
+                [...callHistoryNumbers]
+                  .reverse()
+                  .slice(0, 50)
+                  .map((n) => (
+                    <div key={n.value} className="bingo-history-item">
+                      <span className="bingo-history-code">
+                        {getBingoLetter(n.value)}-{n.value}
+                      </span>
+                    </div>
+                  ))
+              )}
+            </div>
+          </div>
+        </section>
+
+        <section className="bingo-control-panel">
+          <div className="bingo-now-label">Current Call</div>
           <div className="bingo-now-number">
             {lastCalled ? (
               <>
@@ -83,10 +176,13 @@ function App() {
                   {getBingoLetter(lastCalled.value)}
                 </span>
                 <span className="bingo-now-value">{lastCalled.value}</span>
+                <span className="bingo-now-code">
+                  {getBingoLetter(lastCalled.value)}-{lastCalled.value}
+                </span>
               </>
             ) : (
               <span className="bingo-now-placeholder">
-                {isStarted ? "Press NEXT to begin" : "Start a new game"}
+                Press DRAW NUMBER to begin
               </span>
             )}
           </div>
@@ -95,10 +191,10 @@ function App() {
             <button
               type="button"
               className="bingo-button primary"
-              onClick={handleCallNext}
-              disabled={!isStarted || remainingNumbers.length === 0}
+              onClick={handleDrawNumber}
+              disabled={remainingNumbers.length === 0}
             >
-              Next Number
+              Draw Number
             </button>
             <button
               type="button"
@@ -114,6 +210,14 @@ function App() {
             >
               Reset
             </button>
+            <button
+              type="button"
+              className="bingo-button secondary"
+              onClick={handleUndoLastCall}
+              disabled={callHistory.length === 0}
+            >
+              Undo Last Call
+            </button>
           </div>
 
           <div className="bingo-status">
@@ -127,44 +231,14 @@ function App() {
               Remaining: <strong>{remainingNumbers.length}</strong>
             </span>
           </div>
-        </section>
 
-        <section className="bingo-sidebar">
-          <div className="bingo-grid-wrapper">
-            <h2 className="bingo-section-title">Board</h2>
-            <div className="bingo-grid">
-              {numbers.map((n) => (
-                <div
-                  key={n.value}
-                  className={`bingo-cell ${n.called ? "called" : ""}`}
-                >
-                  <span className="bingo-cell-letter">
-                    {getBingoLetter(n.value)}
-                  </span>
-                  <span className="bingo-cell-value">{n.value}</span>
-                </div>
-              ))}
-            </div>
-          </div>
-
-          <div className="bingo-history-wrapper">
-            <h2 className="bingo-section-title">Call History</h2>
-            <div className="bingo-history">
-              {calledNumbers.length === 0 ? (
-                <p className="bingo-history-empty">No numbers called yet.</p>
-              ) : (
-                [...calledNumbers]
-                  .reverse()
-                  .slice(0, 50)
-                  .map((n) => (
-                    <div key={n.value} className="bingo-history-item">
-                      <span className="bingo-history-letter">
-                        {getBingoLetter(n.value)}
-                      </span>
-                      <span className="bingo-history-value">{n.value}</span>
-                    </div>
-                  ))
-              )}
+          <div className="bingo-pattern-wrapper">
+            <h2 className="bingo-section-title">Pattern</h2>
+            <div className="bingo-pattern">
+              <div className="bingo-pattern-name">Standard Line</div>
+              <div className="bingo-pattern-description">
+                Any full horizontal, vertical, or diagonal line.
+              </div>
             </div>
           </div>
         </section>
